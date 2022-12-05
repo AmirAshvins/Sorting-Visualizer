@@ -1,0 +1,36 @@
+@use "sass:math";
+@import "../functions/theme-var";
+
+// NOTE: it seems that :vertical, and :horizontal sudo-classes do not work, so we are stuck with applying it to both or none.
+@mixin custom-scrollbar(
+  $size: 5px,
+  $track-color: theme-var(palette-app-specific-scrollbar-track-color),
+  $thumb-color: theme-var(palette-app-specific-scrollbar-thumb-color),
+) {
+  scrollbar-color: $track-color $thumb-color;
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    -webkit-appearance: none !important;
+    transition: none !important;
+    width: $size !important;
+    height: $size !important;
+    margin: 0 $size !important;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $track-color !important;
+    border-radius: math.div($size, 2) !important;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $thumb-color !important;
+    border: 1px solid $thumb-color !important;
+    border-radius: math.div($size, 2) !important;
+    cursor: pointer !important;
+  }
+
+  &::-webkit-scrollbar-corner {
+    background-color: transparent;
+  }
+}

@@ -1,0 +1,111 @@
+@import "functions";
+@import "mixins";
+
+html {
+
+  .sorting-view {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    &-app-bar {
+      @include custom-scrollbar();
+      padding: 0.5rem 1rem;
+      width: 100%;
+      height: fit-content;
+      background-color: theme-var(palette-background-level1);
+      display: flex;
+      align-items: center;
+      overflow-x: auto;
+
+      > * {
+        min-width: fit-content;
+      }
+
+      &-logo {
+        width: 40px;
+        height: 40px;
+      }
+
+      &-theme-button {
+        margin-inline-end: auto;
+        margin-inline-start: 1rem;
+        width: 32px;
+        height: 32px;
+      }
+
+      &-divider {
+        height: 80%;
+        transform: translateY(10%);
+        margin-inline: 1rem;
+      }
+
+      &-slider {
+        &-container {
+          display: flex;
+          align-items: center;
+          min-width: 15rem;
+        }
+
+        &-label {
+          white-space: nowrap;
+          margin-right: 1rem;
+        }
+
+      }
+
+      &-algo-select {
+        min-width: 8rem;
+      }
+
+      &-new-array {
+        font-size: theme-var(fontSize-xs);
+      }
+
+      &-start {
+        margin-inline-start: auto;
+        font-size: theme-var(fontSize-xs);
+      }
+    }
+
+    &-content {
+      flex-grow: 1;
+      flex-shrink: 1;
+
+      &-container {
+        height: 90%;
+        width: 100%;
+        margin: auto;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+      }
+
+      &-rect {
+        background-color: theme-var(palette-primary-plainColor);
+        width: 100%;
+        height: 100%;
+
+        &-container {
+          width: css-min(calc(100% / (var(--rects-num))), 100px);
+          height: calc((var(--rect-value)) * 1%);
+          padding-inline: calc(2rem / css-min(var(--rects-num), 50));
+        }
+
+        &-value {
+          opacity: 0;
+          width: 100%;
+          text-align: center;
+          color: theme-var(palette-common-white);
+          font-size: css-clamp(1rem, calc(10rem / (var(--rects-num))), 1.5rem);
+
+          &.show {
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+$theme-prefix: --;
+
+@function theme-var($name) {
+  @if ($theme-prefix == --) {
+    @return var(#{$theme-prefix}#{$name});
+  }
+  @return var(#{$theme-prefix}-#{$name});
+}

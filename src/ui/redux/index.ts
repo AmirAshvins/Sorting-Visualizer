@@ -1,6 +1,23 @@
-import {configureStore as toolkitConfigureStore} from '@reduxjs/toolkit'
+import {combineReducers, configureStore as toolkitConfigureStore} from '@reduxjs/toolkit'
 import EnvService from "../../core/services/env-service";
-import ReduxRootReducer from "./root-reducer";
+import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootReduxState} from "../../types/ui/redux";
+import {SorterReduxSlice, SorterReduxSliceActions} from "./slices/sorter";
+
+
+/**
+ * The Actions of the Redux Store state.
+ */
+export const ReduxActions = {
+    [SorterReduxSlice.name]: SorterReduxSliceActions,
+}
+
+/**
+ * The Root Reducer of the Redux Store state.
+ */
+const ReduxRootReducer = combineReducers({
+    [SorterReduxSlice.name]: SorterReduxSlice.reducer,
+});
 
 /**
  * Configures the Redux store of the application and returns the configured store.
@@ -18,12 +35,14 @@ const configureStore = () => {
     })
 
     if (EnvService.isDevelopment) {
-        module.hot?.accept('./root-reducer', () => store.replaceReducer(ReduxRootReducer))
+        module.hot?.accept('./index.ts', () => store.replaceReducer(ReduxRootReducer))
     }
     return store;
 }
 
-const ReduxStore = configureStore();
 
-export {default as ReduxActions} from './actions';
+export const useAppDispatch: () => AppDispatch = useDispatch;
+export const useAppSelector: TypedUseSelectorHook<RootReduxState> = useSelector;
+
+const ReduxStore = configureStore();
 export default ReduxStore;

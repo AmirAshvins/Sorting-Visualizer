@@ -12,13 +12,18 @@ export type AppThunkDispatch<> = ThunkDispatch<RootReduxState, unknown, AnyActio
 export type AppThunkGetState = () => RootReduxState;
 
 
+export type ISorterArrayValue = {
+    value: number,
+    id: string
+};
+
 export type ISorterReduxSliceState = {
     arrayLength: number,
     sortingSpeed: number,
     algorithm?: SortingAlgorithms,
     sorting: boolean,
     maxArrayValue: number,
-    array: Array<number>,
+    array: Array<ISorterArrayValue>,
     selectedIndices: Array<number>,
     swappingIndices: [number, number],
     sortedIndices: Array<number>,

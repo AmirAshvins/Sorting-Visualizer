@@ -10,7 +10,7 @@ import {
     MinSortingSpeed
 } from "../../../../core/models/constants";
 import SortingService from "../../../../core/services/sorting-service";
-import {ISorterReduxSliceState} from "../../../../types/ui/redux";
+import {ISorterArrayValue, ISorterReduxSliceState} from "../../../../types/ui/redux";
 import {SorterSortingStep} from "../../../../types/models/sorter";
 
 /**
@@ -41,8 +41,8 @@ const SorterReduxSlice = createSlice({
          * @param state
          */
         generateArray: (state) => {
-            state.array = SortingService.generateArrayOfNumbers(state.arrayLength, MinArrayValue, MaxArrayValue);
-            state.maxArrayValue = Math.max(...state.array);
+            state.array = SortingService.generateArrayOfSorterArrayValue(state.arrayLength, MinArrayValue, MaxArrayValue);
+            state.maxArrayValue = Math.max(...state.array.map(e => e.value));
             state.sortedIndices = initialState.sortedIndices;
             return state;
         },
@@ -153,10 +153,10 @@ const SorterReduxSlice = createSlice({
          * @param state
          * @param action
          */
-        replaceIndices: (state, action: PayloadAction<SorterSortingStep<number>['setValueInIndex']>) => {
+        replaceIndices: (state, action: PayloadAction<SorterSortingStep<ISorterArrayValue>['setValueInIndex']>) => {
             state.swappingIndices = [
                 action.payload![0],
-                state.array.findIndex(e => e === action.payload![1])
+                state.array.findIndex(e => e.id === action.payload![1].id)
             ];
             if (state.swappingIndices[0] === state.swappingIndices[1]) {
                 state.swappingIndices = initialState.swappingIndices;

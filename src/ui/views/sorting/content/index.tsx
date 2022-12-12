@@ -2,6 +2,7 @@ import {useMemo} from "react";
 import {Typography} from "@mui/joy";
 import classnames from "classnames";
 import {useAppSelector} from "../../../redux";
+import {ISorterArrayValue} from "../../../../types/ui/redux";
 
 const SortingViewContent = () => {
     const array = useAppSelector(state => state.sorter.array);
@@ -17,7 +18,7 @@ const SortingViewContent = () => {
                     {
                         array.map((value, index) => (
                             <SortingViewContentRect
-                                key={`${value}-${index}`}
+                                key={`${value.value}-${index}`}
                                 showValue={showRectValue}
                                 value={value}
                                 index={index}
@@ -33,7 +34,7 @@ const SortingViewContent = () => {
 
 interface ISortingViewContentRectProps {
     showValue: boolean,
-    value: number,
+    value: ISorterArrayValue,
     index: number,
 }
 
@@ -49,7 +50,7 @@ const SortingViewContentRect = ({
     const maxValue = useAppSelector(state => state.sorter.maxArrayValue);
 
     // range should be between 10 and 100, so we get value between 0 and 90 then add 10
-    const valuePercentage = useMemo(() => (value / maxValue) * 90 + 10, [maxValue, value]);
+    const valuePercentage = useMemo(() => (value.value / maxValue) * 90 + 10, [maxValue, value.value]);
 
     const rectClassName = useMemo(() => {
         if (sorted)
@@ -76,12 +77,12 @@ const SortingViewContentRect = ({
                                 'sorting-view-content-rect-value',
                                 {'show': showValue}
                             )}>
-                            {value}
+                            {value.value}
                         </Typography>
                     </div>
                 </div>
             </>,
-        [showValue, value, valuePercentage, rectClassName]);
+        [showValue, value.value, value.id, valuePercentage, rectClassName]);
 }
 
 

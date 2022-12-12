@@ -22,7 +22,7 @@ const sort = (isMounted: () => boolean): AppThunkAction => async (dispatch, getS
     const sortingSteps = SortingService.getSortingSteps(
         sorterState.algorithm as SortingAlgorithms,
         sorterState.array,
-        SortingService.numComparator
+        SortingService.sorterArrayValueComparator
     );
     await SortingService.sort(
         dispatch,

@@ -98,19 +98,19 @@ html {
         height: 100%;
 
         &.pivot {
-          background-color: theme-var(palette-warning-main);
+          background-color: theme-var(palette-warning-solidBg);
         }
 
         &.selected {
-          background-color: theme-var(palette-success-main);
+          background-color: theme-var(palette-success-solidBg);
         }
 
         &.swapped {
-          background-color: theme-var(palette-error-main);
+          background-color: theme-var(palette-danger-solidBg);
         }
 
         &.sorted {
-          background-color: theme-var(palette-info-main);
+          background-color: theme-var(palette-info-solidBg);
         }
 
         &-container {

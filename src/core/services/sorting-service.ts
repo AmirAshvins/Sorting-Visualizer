@@ -1,14 +1,17 @@
-/**
- * This service contains the logic for the sorters of the application and their utility methods.
- */
 import {SorterComparator, SorterSortingStep} from "../../types/models/sorter";
 import {SortingAlgorithms, SortingSpeedPivot} from "../models/constants";
 import BubbleSorter from "../models/in-app/sorter/types/bubble-sorter";
-import {AppThunkDispatch} from "../../types/ui/redux";
+import {AppThunkDispatch, ISorterArrayValue} from "../../types/ui/redux";
 import SorterReduxSlice from "../../ui/redux/slices/sorter/_slice";
 import SelectionSorter from "../models/in-app/sorter/types/selection-sorter";
 import InsertionSorter from "../models/in-app/sorter/types/insertion-sorter";
+import MergeSorter from "../models/in-app/sorter/types/merge-sorter";
+import {v4 as UUIDv4} from 'uuid';
 
+
+/**
+ * This service contains the logic for the sorters of the application and their utility methods.
+ */
 class SortingService {
 
     /**
@@ -31,6 +34,32 @@ class SortingService {
         return this.generateRandomArray(
             length,
             () => Math.floor(Math.random() * (maxVal - minVal + 1)) + minVal
+        );
+    }
+
+    /**
+     * Generates a random array of ISorterArrayValue objects with the provided length.
+     *
+     * @param length        the length of the generated array.
+     * @param minVal        the minimum value of the array entries
+     * @param maxVal        the maximum value of the array entries.
+     */
+    public static generateArrayOfSorterArrayValue(
+        length: number,
+        minVal: number,
+        maxVal: number,
+    ): Array<ISorterArrayValue> {
+        if (minVal > maxVal) {
+            let temp = minVal;
+            minVal = maxVal
+            maxVal = temp;
+        }
+        return this.generateRandomArray(
+            length,
+            () => ({
+                value: Math.floor(Math.random() * (maxVal - minVal + 1)) + minVal,
+                id: `ID-${UUIDv4()}`,
+            })
         );
     }
 
@@ -66,6 +95,20 @@ class SortingService {
     }
 
     /**
+     * Compares two numbers to output a flag number determining if [a] is greater, smaller, or equal to [b].
+     *
+     * @param a the first number
+     * @param b the second number
+     */
+    public static sorterArrayValueComparator(a: ISorterArrayValue, b: ISorterArrayValue): -1 | 1 | 0 {
+        if (a.value > b.value)
+            return 1;
+        if (a.value < b.value)
+            return -1;
+        return 0;
+    }
+
+    /**
      * Fetches the steps needed to sort an array for the provided algorithm and array.
      *
      * @param algorithm     the sorting algorithm to be used for the sorting
@@ -84,10 +127,8 @@ class SortingService {
                 return new BubbleSorter<T>().sort(array, comparator);
             case SortingAlgorithms.insertionSort:
                 return new InsertionSorter<T>().sort(array, comparator);
-            case SortingAlgorithms.heapSort:
-            case SortingAlgorithms.quickSort:
             case SortingAlgorithms.mergeSort:
-                return [];
+                return new MergeSorter<T>().sort(array, comparator);
         }
     }
 
@@ -118,7 +159,7 @@ class SortingService {
         if (step.pivotIndices)
             await dispatch(SorterReduxSlice.actions.setPivotalIndices(step.pivotIndices));
         if (step.setValueInIndex)
-            await dispatch(SorterReduxSlice.actions.replaceIndices(step.setValueInIndex as SorterSortingStep<number>['setValueInIndex']));
+            await dispatch(SorterReduxSlice.actions.replaceIndices(step.setValueInIndex as SorterSortingStep<ISorterArrayValue>['setValueInIndex']));
         setTimeout(
             () => isMounted() && this.sort(dispatch, isMounted, steps, sortingSpeed),
             SortingSpeedPivot / Math.max(sortingSpeed, 1)

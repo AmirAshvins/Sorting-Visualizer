@@ -1,4 +1,4 @@
-import {IAppSpecificPalette, IAppSpecificThemeScales} from "../../../core/types/mui-joy";
+import {IAppSpecificPalette, IAppSpecificThemeScales} from "../../../types/ui/mui-joy";
 
 /**
  * The prefix of the theme options.

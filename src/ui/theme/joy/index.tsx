@@ -15,7 +15,6 @@ const joyTheme = extendJoyTheme({
         dark: {
             palette: {
                 'app-specific': DarkAppSpecificPaletteTheme,
-
             },
         },
     },

@@ -17,6 +17,4 @@ export enum SortingAlgorithms {
     bubbleSort = 'bubbleSort',
     insertionSort = 'insertionSort',
     mergeSort = 'mergeSort',
-    quickSort = 'quickSort',
-    heapSort = 'heapSort',
 }

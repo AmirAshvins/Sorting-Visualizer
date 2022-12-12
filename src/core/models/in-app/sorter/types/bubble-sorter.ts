@@ -29,16 +29,10 @@ class BubbleSorter<T> implements Sorter<T> {
             let swaps = 0;
             for (let j = 0; j < array.length - i - 1; j++) {
                 steps.push({selectedIndices: [j, j + 1]});
-                switch (comparator(array[j], array[j + 1])) {
-                    case 1:
-                        // the swap needs to happen as array[i] is bigger than array[j]
-                        [array[j + 1], array[j]] = [array[j], array[j + 1]];
-                        steps.push({swappingIndices: [j, j + 1]});
-                        swaps++;
-                        break;
-                    case -1:
-                    case 0:
-                        break;
+                if (comparator(array[j], array[j + 1]) === 1) {
+                    [array[j + 1], array[j]] = [array[j], array[j + 1]];
+                    steps.push({swappingIndices: [j, j + 1]});
+                    swaps++;
                 }
             }
             if (swaps === 0) {

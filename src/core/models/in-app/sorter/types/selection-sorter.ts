@@ -32,14 +32,9 @@ class SelectionSorter<T> implements Sorter<T> {
             steps.push({pivotIndices: [minIndex, i]});
             for (let j = i; j < array.length; j++) {
                 steps.push({selectedIndices: [j]});
-                switch (comparator(array[minIndex], array[j])) {
-                    case 1:
-                        minIndex = j;
-                        steps.push({pivotIndices: [minIndex, i]});
-                        break;
-                    case -1:
-                    case 0:
-                        break;
+                if (comparator(array[minIndex], array[j]) === 1) {
+                    minIndex = j;
+                    steps.push({pivotIndices: [minIndex, i]});
                 }
             }
             if (minIndex !== i) {

@@ -8,6 +8,7 @@ import ReduxStore from "./redux";
 import theme from "./theme";
 import {History} from '@remix-run/router';
 import ApplicationViews from "./views";
+import envService from "../core/services/env-service";
 
 
 const Application = () => {
@@ -19,7 +20,7 @@ const Application = () => {
             defaultMode={'dark'}
         >
             <CssBaseline/>
-            <HistoryRouter history={history}>
+            <HistoryRouter basename={envService.PublicUrl} history={history}>
                 <ReduxProvider store={ReduxStore}>
                     <ApplicationViews/>
                 </ReduxProvider>
